@@ -1,5 +1,93 @@
-학번:26085007
+# 26085007_NamYerim_GameProject
 
-이름:남예림
+## 과제 정보
+- 학번: 26085007
+- 이름: 남예림
+- 과목명: 객체지향 프로그래밍 I
+- 과제명: C++과 glc2d를 활용한 2D 게임 제작 프로젝트
+- 개발 기간: 4주
+- 개발 환경: Visual Studio 2022 Community, C++17, glc2d, DirectX SDK
+- 버전 관리: Git, GitHub
+- GitHub 저장소: https://github.com/skawldh/26085007_NamYerim_GameProject
 
--과목명 객체지향 프로그래밍 I
+## 게임 소개
+ENDLESS RUNNER는 Spacebar 단 하나로 점프하여 다가오는 장애물을 피하고 코인을 획득하는 단순하고 직관적인 2D 사이드스크롤 원버튼 러너 게임이다. 복잡한 시스템보다는 캐릭터 이동, 중력 연산, 충돌 판정 등 C++ 핵심 기본 요소를 정확히 구현하는 것을 목표로 한다.
+
+## 게임 기본 정보
+- 게임 제목: ENDLESS RUNNER
+- 장르: 2D 사이드스크롤 원버튼 러너
+- 플레이 방식: 싱글 플레이
+- 시작 능력치: HP 3 (최대 HP 3)
+- 초기 위치: X=100, Y=300 (발판 높이)
+
+## 게임 진행 흐름
+1. 메인 메뉴에서 GAME START를 누른다
+2. 플레이어가 발판 위에서 달리기 시작하며, 오른쪽에서 장애물과 코인이 다가온다
+3. Spacebar를 눌러 점프해 장애물을 회피하고 코인을 획득한다
+4. 장애물 충돌 시 HP가 감소하고 일시적 피격 무적 상태가 된다
+5. HP가 0이 되면 GAME OVER 화면이 출력된다
+6. 이동 거리와 코인 획득 점수를 합산하여 최종 Score를 계산한다
+7. Enter 입력 시 플레이 데이터를 초기화하고 메인 메뉴로 돌아간다
+
+## 장애물 및 아이템 규칙
+### 장애물 (ObstacleType)
+- GroundObstacle: 바닥 장애물 (기본 점프로 회피)
+- HighObstacle: 공중 장애물 (점프 타이밍 조절 필요)
+
+### 아이템 (ItemType)
+- Coin: 점수 +100점 획득
+- HealItem: 플레이어 HP +1 회복 (최대 HP 초과 불가)
+
+## 클래스 구성 계획
+- 1주차: main.cpp (GameState 메뉴 전환 및 점프/중력 테스트)
+- 2주차: GameManager, Player, Obstacle
+- 3주차: Item, CollisionManager, ScoreManager
+
+## 예외 처리 기준
+- 공중 상태에서 점프 연타 입력 방지
+- 화면 왼쪽 밖으로 이탈한 장애물/아이템 동적 메모리 해제
+- HP 0 이하 처리 및 피격 무적 시간 연산
+- 게임 오버 후 재시작 시 플레이 데이터 초기화
+
+## 화면 구성
+- MAIN MENU: GAME START, HOW TO PLAY, EXIT 표시
+- HOW TO PLAY: 기본 조작 및 전투/회피 규칙 안내
+- GAME PLAY: 플레이어, HP, 이동 거리, 점수, 장애물 및 코인 표시
+- GAME OVER: 최종 점수 표시 및 메인 메뉴 이동 항목 표시
+
+## 현재 구현 내용 (1주차)
+- glc2d 및 DirectX SDK를 이용한 게임 창 및 메인 루프 생성
+- 폰트 출력 및 키보드 입력 처리
+- GAME START, HOW TO PLAY, EXIT 메인 메뉴 UI 구현
+- W, S, 방향키 이동 및 Enter 선택, Esc 이전 화면/종료 로직 구현
+- GameState 기반 화면 전환 구조 마련
+
+## 주차별 구현 계획
+### 1주차
+- Visual Studio C++ 프로젝트 및 glc2d, DXSDK 환경 구성
+- Git 저장소, README, .gitignore 구성
+- 메인 메뉴, 설명 화면, 기본 프레임워크 구현
+
+### 2주차
+- Player, Obstacle 클래스 구조화 및 분리
+- 화면 스크롤 효과 및 장애물 무작위 생성 로직 구현
+
+### 3주차
+- AABB 사각형 충돌 판정 시스템 및 배열 기반 관리 구현
+- HP, 점수 연산, 아이템 획득 및 게임 오버 화면 처리
+
+### 4주차
+- glc2d 이미지 스프라이트 및 사운드 리소스 적용
+- 전체 게임 예외 처리, 밸런스 조정 및 최종 빌드 검증
+
+## 실행 및 조작 방법
+### 조작 방법
+- 메뉴 이동: W, S 또는 상향키/하향키
+- 선택: Enter
+- 점프: Spacebar
+- 이전 화면 / 종료: Esc
+
+## 1주차 제출 정보
+- 저장소 이름: 26085007_NamYerim_GameProject
+- 프로젝트 이름: 26085007_NamYerim_GameProject
+- Git Tag: 26085007_NamYerim_GameProject_w01
