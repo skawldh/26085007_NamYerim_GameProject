@@ -2,11 +2,11 @@
 
 int SceneGameBegin::Init()
 {
-    //¹è°æÀÌ¹ÌÁö
+    //ë°°ê²½ì´ë¯¸ì§€
     m_txMain = g2_TextureLoad("Texture/Main_BG.png");
     m_txHowTo = g2_TextureLoad("Texture/Img_HowTo.png");
 
-    //¹öÆ° ÀÌ¹ÌÁö ·Îµå
+    //ë²„íŠ¼ ì´ë¯¸ì§€ ë¡œë“œ
     m_txBtnStartNormal = g2_TextureLoad("Texture/Btn_Start_Normal.png");
     m_txBtnStartHover = g2_TextureLoad("Texture/Btn_Start_Hover.png");
 
@@ -25,17 +25,50 @@ int SceneGameBegin::Init()
 
 int SceneGameBegin::Destroy()
 {
-    if (m_txMain >= 0) { g2_TextureRelease(m_txMain);  m_txMain = -1; }
-    if (m_txHowTo >= 0) { g2_TextureRelease(m_txHowTo); m_txHowTo = -1; }
+    if (m_txMain >= 0) 
+    { 
+        g2_TextureRelease(m_txMain);  
+        m_txMain = -1; 
+    }
+    if (m_txHowTo >= 0) 
+    {
+        g2_TextureRelease(m_txHowTo); 
+        m_txHowTo = -1; 
+    }
 
-    if (m_txBtnStartNormal >= 0) { g2_TextureRelease(m_txBtnStartNormal); m_txBtnStartNormal = -1; }
-    if (m_txBtnStartHover >= 0) { g2_TextureRelease(m_txBtnStartHover);  m_txBtnStartHover = -1; }
+    if (m_txBtnStartNormal >= 0) 
+    { 
+        g2_TextureRelease(m_txBtnStartNormal); 
+        m_txBtnStartNormal = -1; 
+    }
+    if (m_txBtnStartHover >= 0) 
+    { 
+        g2_TextureRelease(m_txBtnStartHover);  
+        m_txBtnStartHover = -1; 
+    }
 
-    if (m_txBtnHowToNormal >= 0) { g2_TextureRelease(m_txBtnHowToNormal); m_txBtnHowToNormal = -1; }
-    if (m_txBtnHowToHover >= 0) { g2_TextureRelease(m_txBtnHowToHover);  m_txBtnHowToHover = -1; }
+    if (m_txBtnHowToNormal >= 0) 
+    { 
+        g2_TextureRelease(m_txBtnHowToNormal); 
+        m_txBtnHowToNormal = -1; 
+    }
+    if (m_txBtnHowToHover >= 0) 
+    { 
+        g2_TextureRelease(m_txBtnHowToHover);  
+        m_txBtnHowToHover = -1; 
+    }
 
-    if (m_txBtnExitNormal >= 0) { g2_TextureRelease(m_txBtnExitNormal);  m_txBtnExitNormal = -1; }
-    if (m_txBtnExitHover >= 0) { g2_TextureRelease(m_txBtnExitHover);   m_txBtnExitHover = -1; }
+    if (m_txBtnExitNormal >= 0) 
+    { 
+        g2_TextureRelease(m_txBtnExitNormal);  
+        m_txBtnExitNormal = -1; 
+    }
+
+    if (m_txBtnExitHover >= 0) 
+    { 
+        g2_TextureRelease(m_txBtnExitHover);   
+        m_txBtnExitHover = -1; 
+    }
 
     return 0;
 }
@@ -61,7 +94,7 @@ int SceneGameBegin::Update(const KEYCODE* keys)
     bool enterDown = enterPressed && !m_prevEnter;
     m_prevEnter = enterPressed;
 
-    // ¸¶¿ì½º ÁÂÇ¥ ±¸ÇÏ±â (Å¬¶óÀÌ¾ðÆ® Ã¢ ³»ºÎ ÁÂÇ¥ ±âÁØ)
+    // ë§ˆìš°ìŠ¤ ì¢Œí‘œ êµ¬í•˜ê¸° (í´ë¼ì´ì–¸íŠ¸ ì°½ ë‚´ë¶€ ì¢Œí‘œ ê¸°ì¤€)
     POINT cursorPosition{ 0, 0 };
     GetCursorPos(&cursorPosition);
 
@@ -76,7 +109,7 @@ int SceneGameBegin::Update(const KEYCODE* keys)
 
     bool mouseClicked = IsMouseClicked();
 
-    // 1. °ÔÀÓ ¹æ¹ý ÆË¾÷ Ãâ·Â Áß Ã³¸®
+    // ê²Œìž„ ë°©ë²• íŒì—… ì¶œë ¥ ì¤‘ ì²˜ë¦¬
     if (m_showHowTo)
     {
         if (mouseClicked || enterDown || IsKeyPressed(VK_ESCAPE))
@@ -86,12 +119,12 @@ int SceneGameBegin::Update(const KEYCODE* keys)
         return 0;
     }
 
-    // 2. ¹öÆ° Å¬¸¯ ÀÌº¥Æ®
+    // ë²„íŠ¼ í´ë¦­ ì´ë²¤íŠ¸
     if (mouseClicked)
     {
         if (m_btnStart.Contains(m_mouseX, m_mouseY))
         {
-            return 1; // °ÔÀÓ ½ÃÀÛ
+            return 1; // ê²Œìž„ ì‹œìž‘
         }
 
         if (m_btnHowTo.Contains(m_mouseX, m_mouseY))
@@ -102,7 +135,7 @@ int SceneGameBegin::Update(const KEYCODE* keys)
 
         if (m_btnExit.Contains(m_mouseX, m_mouseY))
         {
-            return -1; // °ÔÀÓ Á¾·á
+            return -1; // ê²Œìž„ ì¢…ë£Œ
         }
     }
 
@@ -113,24 +146,24 @@ int SceneGameBegin::Render()
 {
     g2_DrawAlphaOption(255);
 
-    // 1. ¸ÞÀÎ ¹è°æ ÀÌ¹ÌÁö Ãâ·Â (È­¸é ÀüÃ¼)
+    // ë©”ì¸ ë°°ê²½ ì´ë¯¸ì§€ ì¶œë ¥
     if (m_txMain >= 0)
     {
         g2_Draw2D(m_txMain, nullptr);
     }
 
-    // 2. ¹öÆ° ÅØ½ºÃ³ Ãâ·Â (ÆË¾÷Ã¢ÀÌ ÄÑÁ® ÀÖÁö ¾ÊÀ» ¶§¸¸)
+    // ë²„íŠ¼ í…ìŠ¤ì²˜ ì¶œë ¥ (íŒì—…ì°½ì´ ì¼œì ¸ ìžˆì§€ ì•Šì„ ë•Œë§Œ)
     if (!m_showHowTo)
     {
-        // [°ÔÀÓ ½ÃÀÛ] ¹öÆ° ·»´õ¸µ
+        // [ê²Œìž„ ì‹œìž‘] ë²„íŠ¼ ë Œë”ë§
         bool isStartHover = m_btnStart.Contains(m_mouseX, m_mouseY);
         int txStart = isStartHover ? m_txBtnStartHover : m_txBtnStartNormal;
         if (txStart >= 0)
         {
-            g2_Draw2D(txStart, nullptr); // nullptrÀ» ÁÖ¸é 800x600 Äµ¹ö½º ÀüÃ¼¿¡ µü ¸Â°Ô Ãâ·ÂµË´Ï´Ù.
+            g2_Draw2D(txStart, nullptr); 
         }
 
-        // [°ÔÀÓ ¹æ¹ý] ¹öÆ° ·»´õ¸µ
+        // [ê²Œìž„ ë°©ë²•] ë²„íŠ¼ ë Œë”ë§
         bool isHowToHover = m_btnHowTo.Contains(m_mouseX, m_mouseY);
         int txHowTo = isHowToHover ? m_txBtnHowToHover : m_txBtnHowToNormal;
         if (txHowTo >= 0)
@@ -138,7 +171,7 @@ int SceneGameBegin::Render()
             g2_Draw2D(txHowTo, nullptr);
         }
 
-        // [³ª °¡ ±â] ¹öÆ° ·»´õ¸µ
+        // [ë‚˜ ê°€ ê¸°] ë²„íŠ¼ ë Œë”ë§
         bool isExitHover = m_btnExit.Contains(m_mouseX, m_mouseY);
         int txExit = isExitHover ? m_txBtnExitHover : m_txBtnExitNormal;
         if (txExit >= 0)
@@ -147,7 +180,7 @@ int SceneGameBegin::Render()
         }
     }
 
-    // 3. °ÔÀÓ ¹æ¹ý ÆË¾÷Ã¢ Ãâ·Â
+    // ê²Œìž„ ë°©ë²• íŒì—…ì°½ ì¶œë ¥
     if (m_showHowTo && m_txHowTo >= 0)
     {
         g2_Draw2D(m_txHowTo, nullptr);
