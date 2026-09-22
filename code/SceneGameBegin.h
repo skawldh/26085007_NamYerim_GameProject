@@ -32,11 +32,11 @@ private:
     bool IsMouseClicked();
 
 private:
-    // ¹è°æ ¹× ÆË¾÷ ÅØ½ºÃ³
+    // ë°°ê²½ ë° íŒì—… í…ìŠ¤ì²˜
     int m_txMain = -1;
     int m_txHowTo = -1;
 
-    // ¹öÆ° ÅØ½ºÃ³ (800x600 ÀüÃ¼ Å©±â Äµ¹ö½º ÀÌ¹ÌÁö)
+    // ë²„íŠ¼ í…ìŠ¤ì²˜
     int m_txBtnStartNormal = -1;
     int m_txBtnStartHover = -1;
 
@@ -46,11 +46,10 @@ private:
     int m_txBtnExitNormal = -1;
     int m_txBtnExitHover = -1;
 
-    // ¸¶¿ì½º Å¬¸¯ ÆÇÁ¤ ¿µ¿ª (800x600 È­¸é ±âÁØ ÁÂÇ¥)
-    // ¡Ø ½ÇÇàÇØº¸°í ¸¶¿ì½º Å¬¸¯ ¹üÀ§°¡ »ìÂ¦ ¾î±ß³ª¸é ¿©±â ¼ıÀÚ¸¸ Á¶±İ¾¿ Á¶ÀıÇÏ½Ã¸é µË´Ï´Ù.
-    ButtonRect m_btnStart{ 320, 390, 160, 45 };  // "°ÔÀÓ ½ÃÀÛ" À§Ä¡
-    ButtonRect m_btnHowTo{ 320, 440, 160, 45 };  // "°ÔÀÓ ¹æ¹ı" À§Ä¡
-    ButtonRect m_btnExit{ 320, 490, 160, 45 };  // "³ª °¡ ±â" À§Ä¡
+    // ë§ˆìš°ìŠ¤ í´ë¦­ íŒì • ë²”ìœ„
+    ButtonRect m_btnStart{ 320, 390, 160, 45 };  // "ê²Œì„ ì‹œì‘" ìœ„ì¹˜
+    ButtonRect m_btnHowTo{ 320, 440, 160, 45 };  // "ê²Œì„ ë°©ë²•" ìœ„ì¹˜
+    ButtonRect m_btnExit{ 320, 490, 160, 45 };  // "ë‚˜ ê°€ ê¸°" ìœ„ì¹˜
 
     bool m_showHowTo = false;
     bool m_prevEnter = false;
