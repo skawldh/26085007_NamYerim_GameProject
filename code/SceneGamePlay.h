@@ -9,9 +9,9 @@
 enum class RPSChoice
 {
     NONE = -1,
-    SCISSORS = 0, // °¡À§
-    ROCK = 1,     // ¹ÙÀ§
-    PAPER = 2     // º¸
+    SCISSORS = 0, 
+    ROCK = 1,     
+    PAPER = 2     
 };
 
 class SceneGamePlay
@@ -25,49 +25,85 @@ public:
     void ResetGame();                            
 
 private:
-    bool IsKeyPressed(int key);                  // Å° ÀÔ·Â È®ÀÎÇØÁÖ´Â ¾Ö
-    void StartTurn(RPSChoice playerChoice);     // Å° ´­·¶À» ¶§ 3ÃÊ Ä«¿îÆ® ½ÃÀÛ
-    void FinishTurn();                           // rand() ÈÄ ½ÂÆÐ °á°ú¿¡ µû¶ó ¸» ÀÌµ¿
+    bool IsKeyPressed(int key);                  // í‚¤ ìž…ë ¥ í™•ì¸í•´ì£¼ëŠ” ì• 
+    void StartTurn(RPSChoice playerChoice);     // í‚¤ ëˆŒë €ì„ ë•Œ 3ì´ˆ ì¹´ìš´íŠ¸ ì‹œìž‘
+    void FinishTurn();                           // rand() í›„ ìŠ¹íŒ¨ ê²°ê³¼ì— ë”°ë¼ ë§ ì´ë™
 
 private:
-    int m_txBackground = -1;     // ¹è°æ
+    int m_txBackground = -1;     // ë°°ê²½
 
-    // °¡À§, ¹ÙÀ§, º¸ ±âº» ¹öÆ°
+    // ê°€ìœ„, ë°”ìœ„, ë³´ ê¸°ë³¸ ë²„íŠ¼
     int m_txScissors = -1;
     int m_txRock = -1;
     int m_txPaper = -1;
 
-    // °¡À§, ¹ÙÀ§, º¸ ´­¸²¹öÆ°
+    // ê°€ìœ„, ë°”ìœ„, ë³´ ëˆŒë¦¼ë²„íŠ¼
     int m_txScissorsHover = -1;
     int m_txRockHover = -1;
     int m_txPaperHover = -1;
 
-    // Ä«¿îÆ® ¼ýÀÚ ÀÌ¹ÌÁö
+    // ê°€ìœ„ ë°”ìœ„ ë³´ ë§ˆìš°ìŠ¤ í´ë¦­ 
+    POINT m_mousePos; 
+    bool m_isLButtonDown;
+    bool m_prevLButtonDown;
+
+    RECT m_rtScissors;
+    RECT m_rtRock;
+    RECT m_rtPaper;
+
+    // ì¹´ìš´íŠ¸ ìˆ«ìž ì´ë¯¸ì§€
     int m_txCount1 = -1;
     int m_txCount2 = -1;
     int m_txCount3 = -1;
 
-    //¸» ÀÌ¹ÌÁö
+    int m_aiChoice;        // ì»´í“¨í„°ê°€ ë½‘ì€ ì¹´ë“œ (0: ê°€ìœ„, 1: ë°”ìœ„, 2: ë³´)
+    int m_txComScissors;   // ì»´í“¨í„° ê°€ìœ„ í…ìŠ¤ì²˜
+    int m_txComRock;       // ì»´í“¨í„° ë°”ìœ„ í…ìŠ¤ì²˜
+    int m_txComPaper;      // ì»´í“¨í„° ë³´ í…ìŠ¤ì²˜
+
+    //ë§ ì´ë¯¸ì§€
     int m_txPiece = -1;
     
     Piece m_younghee;
     Piece m_cheolsoo;
 
-    // °ÔÀÓ ÁøÇà »óÅÂ º¯¼ö
-    bool m_isEvaluating = false;  // Ä«¿îÆ® ÁøÇà ÁßÀÎÁö
+    //ì˜í¬ ì² ìˆ˜ ìŠ¹ë¦¬ í”„ë¡œí•„ ì´ë¯¸ì§€
+    int m_txYoungheeWin = -1;
+    int m_txCheolsooWin = -1;
+
+    int m_turnWinner = 0;   // 0: ë¬´ìŠ¹ë¶€, 1: í”Œë ˆì´ì–´(ì˜í¬) ìŠ¹, 2: ì»´í“¨í„°(ì² ìˆ˜) ìŠ¹
+    bool m_moved = false;   // ì´ë²ˆ í„´ì— ë§ì„ ì´ë¯¸ ì›€ì§ì˜€ëŠ”ì§€ (ì¤‘ë³µ ì´ë™ ë°©ì§€)
+
+
+    // ê²Œìž„ ì§„í–‰ ìƒíƒœ ë³€ìˆ˜
+    bool m_isEvaluating = false;  // ì¹´ìš´íŠ¸ ì§„í–‰ ì¤‘ì¸ì§€
     bool m_isGameOver = false;    
 
     int m_countdown = 0;       
     int m_countdownTimer = 0;   
 
-    RPSChoice m_playerChoice = RPSChoice::NONE; // ÇÃ·¹ÀÌ¾î ¼±ÅÃ
+    ULONGLONG m_turnStartTime = 0;
 
-    // Å° Áßº¹ ÀÔ·Â ¹æÁö
+    RPSChoice m_playerChoice = RPSChoice::NONE; // í”Œë ˆì´ì–´ ì„ íƒ
+
+    // í‚¤ ì¤‘ë³µ ìž…ë ¥ ë°©ì§€
     bool m_prevKey1 = false;
     bool m_prevKey2 = false;
     bool m_prevKey3 = false;
 
-    // Â¡°Ë´Ù¸® µ¹ 1~10¹ø X ÁÂÇ¥
-    const int m_stoneX[10] = { 100, 168, 236, 304, 372, 440, 508, 576, 644, 712 };
-    const int m_stoneY = 395;
+ /*------------------------
+    // 0ë²ˆ(ì˜í¬ ì•„ì›ƒ)ë¶€í„° 10ë²ˆ(ì² ìˆ˜ ì•„ì›ƒ)ê¹Œì§€ ì´ 11ê°œì˜ 'ëŒ ì‚¬ì´' X ì¢Œí‘œ
+    const int m_stoneX[11] = { 132, 197, 262, 327, 392, 457, 522, 587, 652, 717, 782 };
+    const int m_stoneY = 400;
+
+-------------------------
+*/
+    const int m_stoneX[11] = { 40, 110, 190, 260, 335, 405, 480, 550, 620, 690, 760 };
+    const int m_stoneY = 390;
+
+    //ê²°ê³¼ í™”ë©´ì— ìŠ¹íŒ¨ ì „ë‹¬ìš©
+    bool GetPlayerWin() const 
+    { 
+        return m_younghee.GetPosition() >= 10; 
+    }
 };
