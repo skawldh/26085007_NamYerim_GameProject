@@ -1,273 +1,407 @@
 #include "SceneGamePlay.h"
+#include <ctime>
+#include <cstdlib>
 
-// Init(): °ÔÀÓ ¸®¼Ò½º ·Îµå ¹× ÃÊ±âÈ­
-
+// Init(): ê²Œì„ ë¦¬ì†ŒìŠ¤ ë¡œë“œ ë° ì´ˆê¸°í™”
 int SceneGamePlay::Init()
 {
-    // ·£´ı ³­¼ö ±âÁØ°ª ÃÊ±âÈ­
+    // ëœë¤ ë‚œìˆ˜ ê¸°ì¤€ê°’ ì´ˆê¸°í™”
     srand((unsigned int)time(NULL));
 
-    // ±âÁ¸ ÅØ½ºÃ³ Á¤¸®
+    // ê¸°ì¡´ í…ìŠ¤ì²˜ ì •ë¦¬
     Destroy();
 
-    // ¹è°æ
+    // ë°°ê²½
     m_txBackground = g2_TextureLoad("Texture/InGame_BG.png");
 
-    // °¡À§¹ÙÀ§º¸ ±âº» ¹öÆ°
+    // ê°€ìœ„ë°”ìœ„ë³´ ê¸°ë³¸ ë²„íŠ¼
     m_txScissors = g2_TextureLoad("Texture/Btn_Scissors.png");
     m_txRock = g2_TextureLoad("Texture/Btn_Rock.png");
     m_txPaper = g2_TextureLoad("Texture/Btn_Paper.png");
 
-    // Hover(´­¸²) ¹öÆ°
+    // Hover(ëˆŒë¦¼) ë²„íŠ¼
     m_txScissorsHover = g2_TextureLoad("Texture/Btn_Scissors_Hover.png");
     m_txRockHover = g2_TextureLoad("Texture/Btn_Rock_Hover.png");
     m_txPaperHover = g2_TextureLoad("Texture/Btn_Paper_Hover.png");
 
-    // Ä«¿îÆ®¼ıÀÚ ·Îµå
+    // ì»´í“¨í„° ì¹´ë“œ ì´ë¯¸ì§€ ë¡œë“œ
+    m_txComScissors = g2_TextureLoad("Texture/Com_Scissors.png");
+    m_txComRock = g2_TextureLoad("Texture/Com_Rock.png");
+    m_txComPaper = g2_TextureLoad("Texture/Com_Paper.png");
+
+    m_rtScissors = { 20, 470, 260, 570 };
+    m_rtRock = { 270, 470, 510, 570 };
+    m_rtPaper = { 520, 470, 760, 570 };
+
+    m_isLButtonDown = false;
+    m_prevLButtonDown = false;
+
+    // ì¹´ìš´íŠ¸ìˆ«ì ë¡œë“œ
     m_txCount1 = g2_TextureLoad("Texture/Count_1.png");
     m_txCount2 = g2_TextureLoad("Texture/Count_2.png");
     m_txCount3 = g2_TextureLoad("Texture/Count_3.png");
 
-    // ¸» ·Îµå
+    // ë§ ë¡œë“œ
     m_txPiece = g2_TextureLoad("Texture/Piece.png");
+
+   // ìŠ¹íŒ¨ í”„ë¡œí•„ ì´ë¯¸ì§€ ë¡œë“œ 
+    m_txYoungheeWin = g2_TextureLoad("Texture/Profile_YoungheeWin.png");
+    m_txCheolsooWin = g2_TextureLoad("Texture/Profile_CheolsooWin.png");
+
 
     ResetGame();
 
     return 0;
 }
 
-
-// Destroy(): »ç¿ëÇÑ ÅØ½ºÃ³ ¸Ş¸ğ¸® ÇØÁ¦
-
+// Destroy(): ì‚¬ìš©í•œ í…ìŠ¤ì²˜ ë©”ëª¨ë¦¬ í•´ì œ
 int SceneGamePlay::Destroy()
 {
-    if (m_txBackground >= 0) { g2_TextureRelease(m_txBackground);    m_txBackground = -1; }
+    if (m_txBackground >= 0) 
+    { 
+        g2_TextureRelease(m_txBackground); 
+        m_txBackground = -1; 
+    }
+    if (m_txScissors >= 0) 
+    { 
+        g2_TextureRelease(m_txScissors); 
+        m_txScissors = -1; 
+    }
+    if (m_txRock >= 0) 
+    { 
+        g2_TextureRelease(m_txRock); 
+        m_txRock = -1; 
+    }
 
-    if (m_txScissors >= 0) { g2_TextureRelease(m_txScissors);      m_txScissors = -1; }
-    if (m_txRock >= 0) { g2_TextureRelease(m_txRock);          m_txRock = -1; }
-    if (m_txPaper >= 0) { g2_TextureRelease(m_txPaper);         m_txPaper = -1; }
+    if (m_txPaper >= 0) 
+    { 
+        g2_TextureRelease(m_txPaper); 
+        m_txPaper = -1; 
+    }
+    if (m_txScissorsHover >= 0) 
+    { 
+        g2_TextureRelease(m_txScissorsHover); 
+        m_txScissorsHover = -1; 
+    }
+    if (m_txRockHover >= 0) 
+    { 
+        g2_TextureRelease(m_txRockHover); 
+        m_txRockHover = -1; 
+    }
+    if (m_txPaperHover >= 0) 
+    { 
+        g2_TextureRelease(m_txPaperHover); 
+        m_txPaperHover = -1; 
+    }
+    if (m_txComScissors >= 0) 
+    { 
+        g2_TextureRelease(m_txComScissors); 
+        m_txComScissors = -1; 
+    }
+    if (m_txComRock >= 0) 
+    { 
+        g2_TextureRelease(m_txComRock); 
+        m_txComRock = -1; 
+    }
 
-    if (m_txScissorsHover >= 0) { g2_TextureRelease(m_txScissorsHover); m_txScissorsHover = -1; }
-    if (m_txRockHover >= 0) { g2_TextureRelease(m_txRockHover);     m_txRockHover = -1; }
-    if (m_txPaperHover >= 0) { g2_TextureRelease(m_txPaperHover);    m_txPaperHover = -1; }
-
-    if (m_txCount1 >= 0) { g2_TextureRelease(m_txCount1);        m_txCount1 = -1; }
-    if (m_txCount2 >= 0) { g2_TextureRelease(m_txCount2);        m_txCount2 = -1; }
-    if (m_txCount3 >= 0) { g2_TextureRelease(m_txCount3);        m_txCount3 = -1; }
-
-    if (m_txPiece >= 0) { g2_TextureRelease(m_txPiece);         m_txPiece = -1; }
+    if (m_txComPaper >= 0) 
+    { 
+        g2_TextureRelease(m_txComPaper); 
+        m_txComPaper = -1; 
+    }
+    if (m_txCount1 >= 0) 
+    { 
+        g2_TextureRelease(m_txCount1); 
+        m_txCount1 = -1; 
+    }
+    if (m_txCount2 >= 0) 
+    { 
+        g2_TextureRelease(m_txCount2);
+        m_txCount2 = -1; 
+    }
+    if (m_txCount3 >= 0)
+    { 
+        g2_TextureRelease(m_txCount3); 
+        m_txCount3 = -1; 
+    }
+    if (m_txPiece >= 0) 
+    { 
+        g2_TextureRelease(m_txPiece); 
+        m_txPiece = -1; 
+    }
+ 
+    if (m_txYoungheeWin >= 0) 
+    { 
+        g2_TextureRelease(m_txYoungheeWin); 
+        m_txYoungheeWin = -1; 
+    }
+    if (m_txCheolsooWin >= 0) 
+    { 
+        g2_TextureRelease(m_txCheolsooWin); 
+        m_txCheolsooWin = -1; 
+    }
 
     return 0;
 }
 
-
-// ResetGame(): °ÔÀÓ ½ÃÀÛ »óÅÂ·Î ¸®¼Â
-
+// ResetGame(): ê²Œì„ ì‹œì‘ ìƒíƒœë¡œ ë¦¬ì…‹
 void SceneGamePlay::ResetGame()
 {
-    // ¸» À§Ä¡ ÃÊ±âÈ­ (¿µÈñ: 5¹ø, Ã¶¼ö: 6¹ø)
-    m_younghee.Init(5);
-    m_cheolsoo.Init(6);
+    m_younghee.Init(5); // 5ë²ˆ ìœ„ì¹˜ì—ì„œ ì‹œì‘
 
     m_isEvaluating = false;
     m_isGameOver = false;
 
     m_countdown = 0;
     m_countdownTimer = 0;
+    m_aiChoice = -1;
 
     m_playerChoice = RPSChoice::NONE;
+
+    m_turnWinner = 0;  
+    m_moved = false;   
+
 
     m_prevKey1 = false;
     m_prevKey2 = false;
     m_prevKey3 = false;
 }
 
-
-// IsKeyPressed(): Å°º¸µå°¡ ´­·È´ÂÁö È®ÀÎ
-
+// IsKeyPressed(): í‚¤ë³´ë“œê°€ ëˆŒë ¸ëŠ”ì§€ í™•ì¸
 bool SceneGamePlay::IsKeyPressed(int key)
 {
     SHORT state = GetAsyncKeyState(key);
     return (state & 0x8000) != 0;
 }
 
-// StartTurn(): Å° ÀÔ·Â ½Ã 3ÃÊ Å¸ÀÌ¸Ó ½ÃÀÛ
-
+// StartTurn(): ì¹´ìš´íŠ¸ë‹¤ìš´ ì‹œì‘
 void SceneGamePlay::StartTurn(RPSChoice playerChoice)
 {
-    if (m_isEvaluating || m_isGameOver)
-    {
-        return;
-    }
+    if (m_isEvaluating || m_isGameOver) return;
 
     m_playerChoice = playerChoice;
-
     m_isEvaluating = true;
-    m_countdown = 3;       // 3ÃÊºÎÅÍ Ä«¿îÆ®´Ù¿î
-    m_countdownTimer = 0;
+    m_countdown = 3;
+    m_aiChoice = -1;
+
+    m_turnWinner = 0;   // ì´ë²ˆ í„´ ìŠ¹ì ì´ˆê¸°í™”
+    m_moved = false;    // ë§ ì´ë™ ì—¬ë¶€ ì´ˆê¸°í™”
+
+    m_turnStartTime = GetTickCount64();
+    // í„´ ì‹œì‘ ì‹œê° ê¸°ë¡ (ì‹¤ì œ ì‹œê°„ ê¸°ì¤€ìœ¼ë¡œ ì¡ì§€ ì•Šìœ¼ë©´ ì»´í“¨í„° ì‚¬ì–‘ì— ë”°ë¼ì„œ ì†ë„ê°€ ë‹¬ë¼ì§€ë‹ˆê¹Œ ê·¸ëƒ¥ ì‹¤ì œ ì‹œê°„ìœ¼ë¡œ 1ì´ˆ 1ì´ˆ 1ì´ˆ 1.2ì´ˆ ìˆœìœ¼ë¡œ ì¡ê¸°ë¡œ í•¨)
 }
 
-// FinishTurn(): rand() ÇÔ¼ö »ç¿ëÇØ ½ÂÆĞ ÆÇÁ¤ ÈÄ ¸» ÀÌµ¿
-
+// FinishTurn(): ìŠ¹íŒ¨ íŒì • í›„ ë§ ì´ë™ (í”„ë¡œí•„ í‘œì‹œ êµ¬ê°„ì—ì„œ ë”± í•œ ë²ˆ í˜¸ì¶œ)
 void SceneGamePlay::FinishTurn()
 {
-    int aiChoice = rand() % 3;
-    int playerChoice = (int)m_playerChoice; // 0: °¡À§, 1: ¹ÙÀ§, 2: º¸
+    int pChoice = static_cast<int>(m_playerChoice);
 
-    // ½ÂÆĞ ÆÇÁ¤
-    if (playerChoice == aiChoice)
+    if (pChoice == m_aiChoice)
     {
+        m_turnWinner = 0;       // ë¬´ìŠ¹ë¶€: ì´ë™ ì—†ìŒ
     }
-    // [ÇÃ·¹ÀÌ¾î ½Â¸® Á¶°Ç] (°¡À§>º¸, ¹ÙÀ§>°¡À§, º¸>¹ÙÀ§)
-    else if ((playerChoice == 0 && aiChoice == 2) ||
-        (playerChoice == 1 && aiChoice == 0) ||
-        (playerChoice == 2 && aiChoice == 1))
+    else if ((pChoice == 0 && m_aiChoice == 2) ||
+        (pChoice == 1 && m_aiChoice == 0) ||
+        (pChoice == 2 && m_aiChoice == 1))
     {
-        // ¿µÈñ/Ã¶¼ö ¸»ÀÌ ¸ğµÎ ¿À¸¥ÂÊ(+1)À¸·Î ÀÌµ¿
+        m_turnWinner = 1;       // í”Œë ˆì´ì–´(ì˜í¬) ìŠ¹ -> ì˜¤ë¥¸ìª½
         m_younghee.Move(1);
-        m_cheolsoo.Move(1);
     }
-    // [ÇÃ·¹ÀÌ¾î ÆĞ¹è Á¶°Ç]
     else
     {
-        // ¿µÈñ/Ã¶¼ö ¸»ÀÌ ¸ğµÎ ¿ŞÂÊ(-1)À¸·Î ¹Ğ·Á³²
+        m_turnWinner = 2;       // ì»´í“¨í„°(ì² ìˆ˜) ìŠ¹ -> ì™¼ìª½
         m_younghee.Move(-1);
-        m_cheolsoo.Move(-1);
     }
 
-    // ½Â¸®/ÆĞ¹è Á¶°Ç Ã¼Å© (¿µÈñ´Â 1¹ø µ¹ ¹ØÀ¸·Î, Ã¶¼öÀÇ °æÀ¯´Â 10¹ø µ¹À» ³Ñ¾î°¥ ¶§)
-    if (m_younghee.GetPosition() < 1 || m_cheolsoo.GetPosition() > 10)
+    // ì–‘ìª½ ë(0ë²ˆ ì•„ì›ƒ or 10ë²ˆ ì•„ì›ƒ) ë„ë‹¬ ì‹œ ê²Œì„ ì˜¤ë²„
+    int curPos = m_younghee.GetPosition();
+    if (curPos <= 0 || curPos >= 10)
     {
         m_isGameOver = true;
     }
-
-    m_isEvaluating = false; 
 }
 
-// Update(): ÀÔ·Â ¹× Å¸ÀÌ¸Ó ¾÷µ¥ÀÌÆ®
-
+// Update(): ì…ë ¥ ë° 1ì´ˆ ë‹¨ìœ„ íƒ€ì´ë¨¸ ì²˜ë¦¬
 int SceneGamePlay::Update(const KEYCODE* keys)
 {
-    if (IsKeyPressed(VK_ESCAPE))
-    {
-        return 0; // ESC ´©¸£¸é Á¾·á
-    }
+    if (IsKeyPressed(VK_ESCAPE)) return 0; // ë©”ì¸ í™”ë©´ìœ¼ë¡œ
 
-    // °ÔÀÓ ¿À¹ö »óÅÂÀÏ ¶§ Enter ´©¸£¸é Àç½ÃÀÛ
+    // ê²Œì„ ì˜¤ë²„ ìƒíƒœ: Enterë¥¼ ëˆ„ë¥´ë©´ ê²°ê³¼ í™”ë©´ìœ¼ë¡œ ì „í™˜
     if (m_isGameOver)
     {
         if (IsKeyPressed(VK_RETURN))
         {
-            ResetGame();
-            return 1;
+            return 2; // ê²°ê³¼í™”ë©´
         }
-        return 1;
+        return 1; // ê²°ê³¼ í™”ë©´ ê°€ê¸° ì „ê¹Œì§€ í”Œë ˆì´ ì”¬ ìœ ì§€
     }
 
-    // Å° ´©¸§ Ã¼Å©
-    bool key1 = IsKeyPressed('1');
-    bool key2 = IsKeyPressed('2');
-    bool key3 = IsKeyPressed('3');
+    POINT pt;
+    GetCursorPos(&pt);
+    ScreenToClient(GetActiveWindow(), &pt);
+    m_mousePos = pt;
 
-    bool newKey1 = key1 && !m_prevKey1;
-    bool newKey2 = key2 && !m_prevKey2;
-    bool newKey3 = key3 && !m_prevKey3;
+    bool isLDown = (GetAsyncKeyState(VK_LBUTTON) & 0x8000) != 0;
+    bool isLClicked = isLDown && !m_prevLButtonDown;
+    m_prevLButtonDown = isLDown;
 
-    m_prevKey1 = key1;
-    m_prevKey2 = key2;
-    m_prevKey3 = key3;
-
-    // Ä«¿îÆ®´Ù¿î ¾Æ´Ò ¶§¸¸ Å° ÀÔ·Â ¹Ş±â
+    // ì…ë ¥ ë°›ê¸°
     if (!m_isEvaluating)
     {
-        if (newKey1) { StartTurn(RPSChoice::SCISSORS); } // 1¹ø: °¡À§
-        else if (newKey2) { StartTurn(RPSChoice::ROCK); }     // 2¹ø: ¹ÙÀ§
-        else if (newKey3) { StartTurn(RPSChoice::PAPER); }    // 3¹ø: º¸
+        if (IsKeyPressed('1') || (isLClicked && PtInRect(&m_rtScissors, m_mousePos)))
+            StartTurn(RPSChoice::SCISSORS);
+        else if (IsKeyPressed('2') || (isLClicked && PtInRect(&m_rtRock, m_mousePos)))
+            StartTurn(RPSChoice::ROCK);
+        else if (IsKeyPressed('3') || (isLClicked && PtInRect(&m_rtPaper, m_mousePos)))
+            StartTurn(RPSChoice::PAPER);
     }
     else
     {
-        // 1ÃÊ 60ÇÁ·¹ÀÓ ´ÜÀ§ Ä«¿îÆ®´Ù¿î
-        m_countdownTimer++;
+        // ì‹¤ì œ ê²½ê³¼ ì‹œê°„(ë°€ë¦¬ì´ˆ) ê¸°ì¤€ íƒ€ì„ë¼ì¸
+        ULONGLONG elapsed = GetTickCount64() - m_turnStartTime;
 
-        if (m_countdownTimer >= 60)
+        if (elapsed < 1000)       
+            m_countdown = 3;
+        else if (elapsed < 2000)  
+            m_countdown = 2;
+        else if (elapsed < 3000)  
+            m_countdown = 1;
+        else if (elapsed < 4200)  // 3.0~4.2ì´ˆ: ì»´í“¨í„° ì¹´ë“œ ê³µê°œ
         {
-            m_countdownTimer = 0;
-            m_countdown--; // 3 -> 2 -> 1
-
-            if (m_countdown <= 0)
+            if (m_aiChoice < 0)
             {
-                FinishTurn(); // 0ÃÊ µÇ¸é ½ÂÆĞ ÆÇÁ¤
+                m_countdown = 0;
+                m_aiChoice = rand() % 3;
             }
+        }
+        else if (elapsed < 5400)  // 4.2~5.4ì´ˆ: ìŠ¹ì í”„ë¡œí•„ í‘œì‹œ + ë§ ì´ë™
+        {
+            m_countdown = -2;     // í”„ë¡œí•„ í‘œì‹œ êµ¬ê°„ í‘œì‹
+
+            if (!m_moved)         // ì´ êµ¬ê°„ì—ì„œ ë”± í•œ ë²ˆë§Œ ì´ë™
+            {
+                m_moved = true;
+                FinishTurn();
+            }
+        }
+        else                      // 5.4ì´ˆ ê²½ê³¼: í„´ ì¢…ë£Œ
+        {
+            m_isEvaluating = false;
         }
     }
 
+
+    /*
+    else
+    {
+        m_countdownTimer++;
+        if (m_countdownTimer >= 60)
+        {
+            m_countdownTimer = 0;
+            m_countdown--; // 3 -> 2 -> 1 -> 0 -> -1
+
+            // 0ì´ˆê°€ ë˜ë©´ ì»´í“¨í„° ëœë¤ ì¹´ë“œ ì„ íƒ
+            if (m_countdown == 0)
+            {
+                m_aiChoice = rand() % 3; // 0: ê°€ìœ„, 1: ë°”ìœ„, 2: ë³´
+            }
+            // -1ì´ˆê°€ ë˜ë©´ (ì»´í“¨í„° ì¹´ë“œê°€ 1ì´ˆê°„ ë³´ì—¬ì§„ í›„) ìŠ¹íŒ¨ íŒì • í›„ ì´ë™
+            else if (m_countdown < 0)
+            {
+                FinishTurn();
+            }
+        }
+    }
+    */
     return 1;
 }
 
-// Render(): È­¸é Ãâ·Â
-
+// Render(): í™”ë©´ ì¶œë ¥
 int SceneGamePlay::Render()
 {
     g2_DrawAlphaOption(255);
-
     RECT rFullScreen = { 0, 0, 800, 600 };
 
-    // ¹è°æ
+    // ë°°ê²½
     if (m_txBackground >= 0)
     {
         g2_Draw2D(m_txBackground, &rFullScreen);
     }
 
-    //°¡À§/¹ÙÀ§/º¸ ¹öÆ° Ãâ·Â --> Å° ´©¸£¸é hover ÀÛ¤·µ¿
-    bool key1 = IsKeyPressed('1');
-    bool key2 = IsKeyPressed('2');
-    bool key3 = IsKeyPressed('3');
+    // ê°€ìœ„/ë°”ìœ„/ë³´ ë²„íŠ¼ + ëˆŒë¦¼ë²„íŠ¼
+    bool isScissorsHover = PtInRect(&m_rtScissors, m_mousePos) || IsKeyPressed('1');
+    bool isRockHover = PtInRect(&m_rtRock, m_mousePos) || IsKeyPressed('2');
+    bool isPaperHover = PtInRect(&m_rtPaper, m_mousePos) || IsKeyPressed('3');
 
-    if (key1 && m_txScissorsHover >= 0)      
+    if (isScissorsHover && m_txScissorsHover >= 0)
         g2_Draw2D(m_txScissorsHover, &rFullScreen);
-    else if (m_txScissors >= 0)               
+    else if (m_txScissors >= 0)
         g2_Draw2D(m_txScissors, &rFullScreen);
 
-    if (key2 && m_txRockHover >= 0)          
+    if (isRockHover && m_txRockHover >= 0)
         g2_Draw2D(m_txRockHover, &rFullScreen);
-    else if (m_txRock >= 0)                   
+    else if (m_txRock >= 0)
         g2_Draw2D(m_txRock, &rFullScreen);
 
-    if (key3 && m_txPaperHover >= 0)         
+    if (isPaperHover && m_txPaperHover >= 0)
         g2_Draw2D(m_txPaperHover, &rFullScreen);
-    else if (m_txPaper >= 0)                  
+    else if (m_txPaper >= 0)
         g2_Draw2D(m_txPaper, &rFullScreen);
 
-    // Ä«¿îÆ®
+    // ì¹´ìš´íŠ¸ë‹¤ìš´ ìˆ«ì / ì»´í“¨í„° ì¹´ë“œ
     if (m_isEvaluating)
     {
-        if (m_countdown == 3 && m_txCount3 >= 0)      
+        if (m_countdown == 3 && m_txCount3 >= 0)     
             g2_Draw2D(m_txCount3, &rFullScreen);
         else if (m_countdown == 2 && m_txCount2 >= 0) 
             g2_Draw2D(m_txCount2, &rFullScreen);
         else if (m_countdown == 1 && m_txCount1 >= 0) 
             g2_Draw2D(m_txCount1, &rFullScreen);
+
+        else if (m_countdown == 0 && m_aiChoice >= 0)
+        {
+            if (m_aiChoice == 0 && m_txComScissors >= 0)   
+                g2_Draw2D(m_txComScissors, &rFullScreen);
+            else if (m_aiChoice == 1 && m_txComRock >= 0)  
+                g2_Draw2D(m_txComRock, &rFullScreen);
+            else if (m_aiChoice == 2 && m_txComPaper >= 0) 
+                g2_Draw2D(m_txComPaper, &rFullScreen);
+        }
+
+        // ë§ë³´ë‹¤ ë¨¼ì € ê·¸ë ¤ì„œ ë§ì´ ìœ„ì— ì˜¤ê²Œ
+        else if (m_countdown == -2)
+        {
+            if (m_turnWinner == 1 && m_txYoungheeWin >= 0)
+            {
+                g2_Draw2D(m_txYoungheeWin, &rFullScreen);
+            }
+            else if (m_turnWinner == 2 && m_txCheolsooWin >= 0)
+            {
+                g2_Draw2D(m_txCheolsooWin, &rFullScreen);
+            }
+        }
+
     }
 
-    // ¸» (Piece) 
+    // ë§ì´ ê³„ì† ë‚˜íƒ€ë‚˜ì§€ ì•Šì•˜ë˜ ì´ìœ : ê°€ë ¤ì ¸ì„œ... 
+    //ë§ì€ "ê°€ì¥ ë§ˆì§€ë§‰ì—" ê·¸ë¦°ë‹¤ (ì „ì²´í™”ë©´ ì´ë¯¸ì§€ì— ê°€ë ¤ì§€ì§€ ì•Šë„ë¡)
     if (m_txPiece >= 0)
     {
-        int youngheePos = m_younghee.GetPosition();
-        int cheolsooPos = m_cheolsoo.GetPosition();
+        int posIndex = m_younghee.GetPosition();
 
-        if (youngheePos >= 1 && youngheePos <= 10)
+        // í˜¹ì‹œ ë²”ìœ„ë¥¼ ë²—ì–´ë‚˜ë©´ ì¤‘ì•™ìœ¼ë¡œ (ì•ˆì „ì¥ì¹˜)
+        if (posIndex < 0 || posIndex > 10)
         {
-            int x = m_stoneX[youngheePos - 1];
-            RECT rPieceY = { x - 20, m_stoneY - 45, x + 20, m_stoneY + 5 };
-            g2_Draw2D(m_txPiece, &rPieceY);
+            posIndex = 5;
         }
 
-        if (cheolsooPos >= 1 && cheolsooPos <= 10)
-        {
-            int x = m_stoneX[cheolsooPos - 1];
-            RECT rPieceC = { x - 20, m_stoneY - 45, x + 20, m_stoneY + 5 };
-            g2_Draw2D(m_txPiece, &rPieceC);
-        }
+        // ë§ì˜ ì¤‘ì‹¬ì„ ëŒ ìœ„ì¹˜ (m_stoneX[posIndex], m_stoneY)ì— ë§ì¶¤
+        // Piece.png í¬ê¸° 160x95 â†’ ì¢Œìƒë‹¨ ì¢Œí‘œëŠ” ì¤‘ì‹¬ì—ì„œ (80, 48)ì„ ëº€ ê°’
+        VEC2 piecePos = { (float)(m_stoneX[posIndex] - 80), (float)(m_stoneY - 48) };
+
+        // ë‘ ë²ˆì§¸ ì¸ì: ì†ŒìŠ¤ ì˜ì—­ = nullptr (ì´ë¯¸ì§€ ì „ì²´)
+        // ì„¸ ë²ˆì§¸ ì¸ì: pTranslate = í™”ë©´ì— ê·¸ë¦´ ìœ„ì¹˜
+        g2_Draw2D(m_txPiece, nullptr, &piecePos);
     }
 
     return 0;
